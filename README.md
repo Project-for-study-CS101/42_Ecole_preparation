@@ -1,2 +1,2 @@
-# 42_Ecole_preparation
-this reposity is prepare to go 42 ecole school
+# 42Prepareration_C
+Practice for get through 42 school
