@@ -28,6 +28,7 @@ Satatuan SgetElement() {
 	sat.Head = '*';
 	sat.left = '/';
 	sat.right = '\\';
+
 	return sat;
 }
 
@@ -88,7 +89,7 @@ void print_stateFloor(int base, int pole) {
 	    // Head
 	    if (i == 0) {
 	    	
-    	
+			// TODO
 	    	for (sbase = 0; sbase < base; sbase++) {
 	    		
 	    		
