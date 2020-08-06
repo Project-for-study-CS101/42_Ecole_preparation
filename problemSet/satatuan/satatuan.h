@@ -1,9 +1,6 @@
-#ifndef SATAUAN_H_
+#ifndef SATAUAN_H
 
-#define SATATUAN_H_
-
-int BaseStair(int floor);
-int PoleLength(int floor);
+#define SATATUAN_H
 
 typedef struct {
 	  
@@ -20,7 +17,6 @@ typedef struct {
 } Door;
 
 typedef struct {
-	
 	// satatuan 
 	char Head ;
 	
@@ -31,11 +27,21 @@ typedef struct {
 	char right ; 
 	
 	char Base  ;
-	
-	
-	
 } Satatuan;
 
 
+int BaseLength(int floor);
+int PoleLength(int floor);
+void printStair(int blank, int base, int stair, Satatuan* ptrSat);
 
-#endif /* SATATUAN_H_ */
+void setupSata(Satatuan* ptrSat);
+
+
+#endif /* SATATUAN_H */
+
+#ifdef SATATUAN_H
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#endif /* SATATUAN_H */

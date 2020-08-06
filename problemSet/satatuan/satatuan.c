@@ -1,106 +1,141 @@
+// Function for satatuan 
 #include "satatuan.h"
 
+Satatuan sat;
 
-Door DgetElement() {
+void setupSata(Satatuan* ptrSat){
 	
-	Door door;
-	
-	door.base = '_' ;
-	
-	door.key = '+';
-	
-	door.left = '|';
-	
-	door.right = '|';
-	
-	door.top = '_' ;
-	
-	return door;
-	
-}
-	
-Satatuan SgetElement() {
-	
-	Satatuan sat;
-	
-	sat.Base = '_';
-	sat.body = '#';
-	sat.Head = '*';
-	sat.left = '/';
-	sat.right = '\\';
+	ptrSat->Head = '^';
+	ptrSat->body = '#';
+	ptrSat->left = '/';
+	ptrSat->right = '\\';
+	ptrSat->Base = '_';
 
-	return sat;
 }
 
-
-int BaseStair(int floor) {
+void printStair(int blank, int base, int stair, Satatuan* ptrSat){	
 	/*
-	Find Base 
-	
-	------|  ( | core base )
-	*/
-	
-	int i, BaseLength = 0;
-	
-	for (i = 0; i < floor; i++ ) {
+	 * Rule 
+	 * 0 -> Head
+	 * 1 -> Base
+	 * 2 -> caseStep
+	 */
+
+	int i, printBody = base - blank;
+
+	switch (stair) {
+
+	case 0 :
 		
-		BaseLength += 3;
-		
-		if ( i != (floor - 1)) {
-			
-			BaseLength += 2;
-			
-		} else {
-			
-			BaseLength += 1;
+		for (i = 0; i < blank; i++) {
+
+			printf(" ");
 		}
+		for (i = 0; i < printBody; i++) {
+
+			if (i == 0) {
+
+				printf("%c", ptrSat->left);
+
+			} else {
+				printf("%c", ptrSat->Head);
+			}
+		}
+		for (i = 0; i < ( printBody -1 ); i++) {
+
+			if (i == (printBody - 2)) {
+				printf("%c", ptrSat->right);
+			} else {
+				printf("%c", ptrSat->Head);
+			}
+			
+		}
+		break; /*stop case 0*/
+	
+	case 1 : 
+
+		for (i = 0; i < ((base * 2) -1); i++) {
+
+			printf("%c", ptrSat->Base);
+		}
+		break;
+
+	case 2 :
+		
+		for (i = 0; i < blank; i++) {
+			printf(" ");
+		}
+
+		for (i = 0; i < printBody; i++) {
+			
+			if (i ==0 || i==1){
+				printf("%c", ptrSat->Base);
+			} else {
+				printf("%c", ptrSat->body);
+			}
+
+		}
+
+		for (i= 0; i < (printBody-1); i++) {
+
+			if ( i == (printBody-3) || (i == (printBody-2))) {
+
+				printf("%c", ptrSat->Base);
+
+			} else {
+
+				printf("%c", ptrSat->body);
+			}
+
+		}
+		break;
+
+	default:
+
+		for (i = 0; i < blank; i++) {
+
+			printf(" ");
+		}
+		for (i = 0; i < printBody; i++) {
+
+			if (i == 0) {
+
+				printf("%c", ptrSat->left);
+
+			} else {
+				printf("%c", ptrSat->body);
+			}
+		}
+		for (i = 0; i < ( printBody -1 ); i++) {
+
+			if (i == (printBody - 2)) {
+				printf("%c", ptrSat->right);
+			} else {
+				printf("%c", ptrSat->body);
+			}
+			
+		}
+		break;
 	}
 	
-	return BaseLength;
+	
+
+	
+	printf("\n");
+}
+
+int BaseLength(int floor){
+	
+	return (5 * floor) - 1;	
+
 }
 
 int PoleLength(int floor) {
 	
-	int i, pole = 0;
-	
-	
-	pole += 2 + (floor - 1);
-	
-	for (i = floor; i > 0; i-- ){
-		
-		pole += i + 1;
-	}
-	
-	return pole;
+	return ((floor / 2.0) * (4 + (floor - 1 ))) + (2 +(floor -1 ));
 }
 
-void print_stateFloor(int base, int pole) {
-	
-	int i, x, y, sbase;
-	
-	Door dr = DgetElement();
-	Satatuan st = SgetElement();
-	
-	
-	
-	//  pole
-	for (i = 0; i < pole; i ++) {
-	    
-	    // Head
-	    if (i == 0) {
-	    	
-			// TODO
-	    	for (sbase = 0; sbase < base; sbase++) {
-	    		
-	    		
-		    }
-	    	
-	    	
-	    }
-	    //left side
-	    
-	    //right	side
-	    //base
-	}
-	
-}
+
+
+
+
