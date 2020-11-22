@@ -1,92 +1,100 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 
+#define LIMIT_NAME_LENGTH 10
 
-typedef struct 
+// struct declare here
+typedef struct
 {
-    char  name[10];
+    char name[LIMIT_NAME_LENGTH];
     int vote;
-} Can;
+} Candidate; 
+// end struct declare
 
-void SetCandidate(Can (*candidateArray)[], int length, char * name[]);
-char * stringClear(char (*name)[]);
+// function declare here
+void SignUP_Candidates(int length, char * name_candidates[], Candidate (*ptrArr)[]);
+void cleanString(char (*ptrString)[]);
+void Add_member(Candidate (*ptrArr)[], char * name);
+void Loop_thought_member(char * candidates[], Candidate (*ptrArr)[], int length_card_array, int length_of_candidate);
+//here function declare
 
+// -------------------
+// * START Program
+// * Program.c
+// --------------------
+int main(int argv, char * argc[]) 
+{
+    argv--; //delete un-used argument [./{nameprogram} ...]
+    //sign up candidate
+    Candidate card[argv];
+    SignUP_Candidates(argv, argc, &card); 
 
-
-int main(int argv, char * candidates[])
-{   
-    
-    int round; 
-    argv--;
-    Can can[argv];
-    SetCandidate(&can, argv, candidates);
+    //input round for vote n time
+    int round;
     scanf("%d", &round);
-    getchar(); //clear buffer
-
-    char name_vote_card[10];
-
-    for (round; round > 0; round--)
-    {
-        fgets(name_vote_card, 10, stdin);
-        //
-
-        
-        strcpy(name_vote_card, stringClear(&name_vote_card));
-        printf("name = %s\n", name_vote_card);
-        int i = 1;
-        for (i; i <= argv; i++) {
-
-            // PRoblem HerE!!!
-            if (!strcmp(candidates[i], name_vote_card)) {
-                printf("Error Candidate name undefined\n");
-                return -1;
-            }
-
-            // correct score //DOING
-            else {
-                can[i].vote += 1;
-            }
-        }
-
-    }
-    argv--;
-    int i;
-    for (i = 0; i < argv; i++) {
-
-        if (can[i].vote > can[i+1].vote) {
-            strcpy(name_vote_card, can[i].name);
-        }
-        else {
-            strcpy(name_vote_card, can[i+1].name);
-        }
-         
-
-        
-
-    }
-    printf("winner is %s\n", name_vote_card);
-    return 0;
-    
-}
-
-
-
-char * stringClear(char (*name)[]) {
-    int length = strlen(*name);
-    (*name)[--length] = '\0';
-    return *name;
-}
-
-void SetCandidate(Can (*candidateArray)[], int length, char * name[]){
-    int i;
-    
-    for (i = 1; i < length; i++) {
-        
-        strcpy((*candidateArray)[i].name, name[i+1]);
-        
-        (*candidateArray)[i].vote = 0;
-        
-    }
-
+    getchar(); //clear buffer from input scanf function
    
+    int i, index;
+    //round vote
+    char vote_card[LIMIT_NAME_LENGTH]; //card
+    Candidate card_voted_array[round];
+
+    for (i = 0; i < round; i++)
+    {
+        fgets(vote_card, LIMIT_NAME_LENGTH, stdin);
+        cleanString(&vote_card); //clear newline in vote_card array
+
+        //add card to card array
+        Add_member(&card_voted_array, vote_card);
+    }
+    Loop_thought_member(argc, &card_voted_array, round, argv);
+    
+    exit(EXIT_SUCCESS);
+}
+
+//Function definitely
+void SignUP_Candidates(int length, char * name_candidates[], Candidate (*ptrArr)[])
+{
+    int i;
+    for (i = 0; i < length; i++) 
+    {
+        strcpy((*ptrArr)[i].name, name_candidates[i+1]);
+        (*ptrArr)[i].vote = 0;
+    }
+}
+
+void cleanString(char (*ptrString)[])
+{
+    int length = strlen(*ptrString);
+    (*ptrString)[length-1] = '\0'; // replace new line character
+}
+
+void Add_member(Candidate (*ptrArr)[], char * name)
+{
+    static int index = 0;
+    strcpy((*ptrArr)[index].name, name);
+    (*ptrArr)[index].vote = 0;
+    
+    index++;
+}
+
+void Loop_thought_member(char * candidates[], Candidate (*ptrArr)[], int length_card_array, int length_of_candidate)
+{
+    //FIX
+    int i, j;
+    for (i = 0; i < length_card_array; i++)
+    {
+        for (j = 1; j <= length_of_candidate; j++)
+        {
+            if(!strcmp((*ptrArr)[i].name, candidates[j]))
+            {
+                printf("compare %s / %s\n", (*ptrArr)[i].name, candidates[j]);
+                (*ptrArr)[i].vote += 1;
+            }
+        }
+        printf("%s have vote [%d]\n", (*ptrArr)[i].name, (*ptrArr)[i].vote);
+    }
 }
