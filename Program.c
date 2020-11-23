@@ -19,6 +19,7 @@ void SignUP_Candidates(int length, char * name_candidates[], Candidate (*ptrArr)
 void cleanString(char (*ptrString)[]);
 void Add_member(Candidate (*ptrArr)[], char * name);
 void Loop_thought_member(char * candidates[], Candidate (*ptrArr)[], int length_card_array, int length_of_candidate);
+bool haveMember_in_Card(char * name, Candidate (*ptrArr)[], int length);
 //here function declare
 
 // -------------------
@@ -44,16 +45,18 @@ int main(int argv, char * argc[])
 
     for (i = 0; i < round; i++)
     {
+        //vote
         fgets(vote_card, LIMIT_NAME_LENGTH, stdin);
         cleanString(&vote_card); //clear newline in vote_card array
 
-        //add card to card array
-        Add_member(&card_voted_array, vote_card);
+        //CURRENT WORK HERE
+        
     }
+
     Loop_thought_member(argc, &card_voted_array, round, argv);
     
     exit(EXIT_SUCCESS);
-}
+} //END PROGRAM
 
 //Function definitely
 void SignUP_Candidates(int length, char * name_candidates[], Candidate (*ptrArr)[])
@@ -81,20 +84,24 @@ void Add_member(Candidate (*ptrArr)[], char * name)
     index++;
 }
 
+bool haveMember_in_Card(char * name, Candidate (*ptrArr)[], int length )
+{
+    int i;
+    for (i = 0; i < length; i++)
+    {
+        if (strcmp((*ptrArr)[i].name, name))
+        {
+            return false; // if have member   
+        }
+    }
+    return true;
+}
+
 void Loop_thought_member(char * candidates[], Candidate (*ptrArr)[], int length_card_array, int length_of_candidate)
 {
-    //FIX
-    int i, j;
-    for (i = 0; i < length_card_array; i++)
-    {
-        for (j = 1; j <= length_of_candidate; j++)
-        {
-            if(!strcmp((*ptrArr)[i].name, candidates[j]))
-            {
-                printf("compare %s / %s\n", (*ptrArr)[i].name, candidates[j]);
-                (*ptrArr)[i].vote += 1;
-            }
-        }
-        printf("%s have vote [%d]\n", (*ptrArr)[i].name, (*ptrArr)[i].vote);
+   
+    int i =0;
+    for (i = 0; i < length_card_array; i++) {
+        printf("[%d] name = %s\n", i, (*ptrArr)[i].name);
     }
 }
