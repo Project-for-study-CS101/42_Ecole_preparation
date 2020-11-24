@@ -1,107 +1,61 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdbool.h>
+#include "lib/string_lib/string_lib.h"
+#include "lib/candidate/candidate.h"
 
-#define LIMIT_NAME_LENGTH 10
+#define string char *
 
-// struct declare here
-typedef struct
-{
-    char name[LIMIT_NAME_LENGTH];
-    int vote;
-} Candidate; 
-// end struct declare
-
-// function declare here
-void SignUP_Candidates(int length, char * name_candidates[], Candidate (*ptrArr)[]);
-void cleanString(char (*ptrString)[]);
-void Add_member(Candidate (*ptrArr)[], char * name);
-void Loop_thought_member(char * candidates[], Candidate (*ptrArr)[], int length_card_array, int length_of_candidate);
-bool haveMember_in_Card(char * name, Candidate (*ptrArr)[], int length);
-//here function declare
-
-// -------------------
-// * START Program
-// * Program.c
-// --------------------
-int main(int argv, char * argc[]) 
-{
-    argv--; //delete un-used argument [./{nameprogram} ...]
-    //sign up candidate
-    Candidate card[argv];
-    SignUP_Candidates(argv, argc, &card); 
-
-    //input round for vote n time
+int main(int arqgv, string argcs[])
+{   
+    //debug
+    int argv = 5;
+    char * argc[5] = {"./file", "odin", "cat", "mawin", "seeta"};
+    //------variable------
     int round;
-    scanf("%d", &round);
-    getchar(); //clear buffer from input scanf function
-   
-    int i, index;
-    //round vote
-    char vote_card[LIMIT_NAME_LENGTH]; //card
-    Candidate card_voted_array[round];
+    argv--;
+    char input_name[10];
+    Candidate candidate_card[argv];
+    //--------------------
 
+    //regist candidate to card
+    Regist_Candidate(argc, &candidate_card, argv);
+
+    // input round for vote
+    printf("round = ");    
+    scanf("%d", &round);
+    getchar(); //pass '\n' in buffer memory
+
+    //round for vote
+    int i;
     for (i = 0; i < round; i++)
     {
-        //vote
-        fgets(vote_card, LIMIT_NAME_LENGTH, stdin);
-        cleanString(&vote_card); //clear newline in vote_card array
+        printf("name = ");
+        fgets(input_name, 10, stdin);
+        clear_newline_string(&input_name, strlen(input_name));
+        printf("name [%d] = %s\n", i, input_name);
 
-        //CURRENT WORK HERE
-        
-    }
+        //If input name already in card_regist +1 point
 
-    Loop_thought_member(argc, &card_voted_array, round, argv);
-    
-    exit(EXIT_SUCCESS);
-} //END PROGRAM
-
-//Function definitely
-void SignUP_Candidates(int length, char * name_candidates[], Candidate (*ptrArr)[])
-{
-    int i;
-    for (i = 0; i < length; i++) 
-    {
-        strcpy((*ptrArr)[i].name, name_candidates[i+1]);
-        (*ptrArr)[i].vote = 0;
-    }
-}
-
-void cleanString(char (*ptrString)[])
-{
-    int length = strlen(*ptrString);
-    (*ptrString)[length-1] = '\0'; // replace new line character
-}
-
-void Add_member(Candidate (*ptrArr)[], char * name)
-{
-    static int index = 0;
-    strcpy((*ptrArr)[index].name, name);
-    (*ptrArr)[index].vote = 0;
-    
-    index++;
-}
-
-bool haveMember_in_Card(char * name, Candidate (*ptrArr)[], int length )
-{
-    int i;
-    for (i = 0; i < length; i++)
-    {
-        if (strcmp((*ptrArr)[i].name, name))
-        {
-            return false; // if have member   
+        int j;
+        for (j = 0; j < argv; j++)
+        {   
+            if (strcmp(candidate_card[j].name, input_name) == 0)
+            {
+                candidate_card[j].vote += 1;
+            }
         }
     }
-    return true;
-}
 
-void Loop_thought_member(char * candidates[], Candidate (*ptrArr)[], int length_card_array, int length_of_candidate)
-{
-   
-    int i =0;
-    for (i = 0; i < length_card_array; i++) {
-        printf("[%d] name = %s\n", i, (*ptrArr)[i].name);
+    //test
+    int k, temp_score = 0, winner;
+    for (k = 0; k < argv; k++)
+    {
+        if (candidate_card[k].vote > temp_score)
+        {
+            temp_score = candidate_card[k].vote;
+            winner = k;
+        }
     }
+    printf("winner is %s\n", candidate_card[winner].name);
+    exit(EXIT_SUCCESS);
 }
